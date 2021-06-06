@@ -21,6 +21,8 @@ export class ThemeSettings {
     useBootstrap: 'no' | 'grid' | 'all';
     useFontAwesome:boolean;
     testSiteUrl:string;
+    targetSkinPath:string;
+    targetContainerPath:string;
     
     constructor() {
         // The package name must be unique and be a valid folder name, so avoid spaces and special charaters 
@@ -42,20 +44,24 @@ export class ThemeSettings {
             `;
 
         // The owner information of the theme (required for all Dnn packages)
-        this.ownerName = "Daniel Valadas";
-        this.ownerOrganization = "Eraware";
+        this.ownerName = "Jeremy Accuraty";
+        this.ownerOrganization = "Accuraty";
         this.ownerUrl = "https://eraware.ca";
-        this.ownerEmail = "info@danielvaladas.com";
+        this.ownerEmail = "2@accuraty.com";
 
         // This section is derived from the previous settings, but feel free to customize if needed
         this.skinpath = `Portals\\_default\\Skins\\${this.packageName}\\`;
         this.containersPath = `Portals\\_default\\Containers\\${this.packageName}\\`;
+
+        // Experimenting with Target build-to folders
+        this.targetSkinPath = `theme/Skins`;
+        this.targetContainerPath = `theme/Containers`;
 
         // This makes build decisions depending on bootstrap and fontawesome preferences.
         this.useBootstrap = 'no';
         this.useFontAwesome = false;
 
         // This saves the last used test site url.
-        this.testSiteUrl = "http://991.localtest.me";
+        this.testSiteUrl = "https://accu4.com/Testing/Eraware-Minimal-Skin";
     }
 }
