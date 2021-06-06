@@ -37,8 +37,8 @@ var semVer = {
 function clean(){
     return del([
         './install/**/*',
-        `../Skins/${themeSettings.packageName}/**/*`,
-        `../Containers/${themeSettings.packageName}/**/*`
+        `${themeSettings.targetSkinPath}/${themeSettings.packageName}/**/*`,
+        `${themeSettings.targetContainerPath}/${themeSettings.packageName}/**/*`
     ], {
         force: true
     });
@@ -82,7 +82,7 @@ function styles(){
     .pipe(concat('theme.min.css'))
     .pipe(cleanCSS({level: 2}))
     .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest(`../Skins/${themeSettings.packageName}/css`))
+    .pipe(gulp.dest(`${themeSettings.targetSkinPath}/${themeSettings.packageName}/css`))
 }
 
 /**
@@ -116,7 +116,7 @@ function scripts(){
     .pipe(sourcemaps.init({loadMaps: true}))
     .pipe(uglify())
     .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest(`../Skins/${themeSettings.packageName}/js`));
+    .pipe(gulp.dest(`${themeSettings.targetSkinPath}/${themeSettings.packageName}/js`));
 }
 
 
@@ -126,7 +126,7 @@ function scripts(){
 function images(){
     return gulp.src('./src/images/*')
     .pipe(imagemin())
-    .pipe(gulp.dest(`../Skins/${themeSettings.packageName}/Images/`));
+    .pipe(gulp.dest(`${themeSettings.targetSkinPath}/${themeSettings.packageName}/Images/`));
 }
 
 /**
@@ -168,7 +168,7 @@ function manifest() {
         )
     )        
     .pipe(rename('manifest.dnn'))
-    .pipe(gulp.dest(`./../Skins/${themeSettings.packageName}`));
+    .pipe(gulp.dest(`${themeSettings.targetSkinPath}/${themeSettings.packageName}`));
 }
 
 /**
@@ -181,7 +181,7 @@ function packageTheme(){
         packageContainers(),
         gulp.src(
             [
-                `../Skins/${themeSettings.packageName}/manifest.dnn`,
+                `${themeSettings.targetSkinPath}/${themeSettings.packageName}/manifest.dnn`,
                 './releaseNotes.txt',
                 'LICENSE'
             ]
@@ -192,12 +192,12 @@ function packageTheme(){
 }
 
 function packageSkin() {
-    return gulp.src(`../Skins/${themeSettings.packageName}/**/*`)
+    return gulp.src(`${themeSettings.targetSkinPath}/${themeSettings.packageName}/**/*`)
     .pipe(zip('./skinResources.zip'));
 }
 
 function packageContainers() {
-    return gulp.src(`../Containers/${themeSettings.packageName}/**/*`)
+    return gulp.src(`${themeSettings.targetContainerPath}/${themeSettings.packageName}/**/*`)
     .pipe(zip('./containersResources.zip'));
 }
 
@@ -205,8 +205,8 @@ function packageContainers() {
  * Copies the html templates (ascx)
  */
 function html(){
-    return gulp.src('src/html/**/*.ascx')
-    .pipe(gulp.dest(`../Skins/${themeSettings.packageName}`, {overwrite: true}));
+    return gulp.src(['src/html/**/*.ascx','src/html/koi.json'])
+    .pipe(gulp.dest(`${themeSettings.targetSkinPath}/${themeSettings.packageName}`, {overwrite: true}));
 }
 
 /**
@@ -214,25 +214,26 @@ function html(){
  */
 function containersHtml(){
     return gulp.src('src/containers/**/*.ascx')
-    .pipe(gulp.dest(`../Containers/${themeSettings.packageName}`, {overwrite: true}));
+    .pipe(gulp.dest(`${themeSettings.targetContainerPath}/${themeSettings.packageName}`, {overwrite: true}));
 }
 
 function menu(){
     return gulp.src('src/html/menus/**/*')
-    .pipe(gulp.dest(`../Skins/${themeSettings.packageName}/menus`, {overwrite: true}));
+    .pipe(gulp.dest(`${themeSettings.targetSkinPath}/${themeSettings.packageName}/menus`, {overwrite: true}));
 }
 
 function fonts(){
     return gulp.src('node_modules/@fortawesome/fontawesome-free/webfonts/*')
     .pipe(gulpif(themeSettings.useFontAwesome, 
-        gulp.dest(`../Skins/${themeSettings.packageName}/webfonts`)
+        gulp.dest(`${themeSettings.targetSkinPath}/${themeSettings.packageName}/webfonts`)
     ));
 }
 
 function doctype(){
     return gulp.src('./skin.doctype.xml')
-    .pipe(gulp.dest(`../Skins/${themeSettings.packageName}`));
+    .pipe(gulp.dest(`${themeSettings.targetSkinPath}/${themeSettings.packageName}`));
 }
+
 
 function watch() {
     const questions = [
